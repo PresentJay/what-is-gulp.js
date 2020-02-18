@@ -2,14 +2,21 @@
   "name": "what-is-gulp",
   "version": "1.0.0",
   "description": "Learn Gulp by building an awesome development environment",
-  "dependencies": {
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/register": "^7.8.3",
     "gulp-cli": "^2.2.0"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/PresentJay/what-is-gulp.js.git"
   },
   "author": "PresentJay <presentj94@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "dev": "gulp dev",
+    "bulid": "gulp bulid"
+  }
 }
