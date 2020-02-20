@@ -1,5 +1,6 @@
 import gulp from "gulp";
 import gpug from "gulp-pug";
+import del from "del";
 
 const routes = {
     pug: {
@@ -9,9 +10,16 @@ const routes = {
     }
 }
 
-export const pug = () => gulp.src(routes.pug.src).pipe(gpug()).pipe(gulp.dest(routes.pug.dest));
+const pug = () => gulp.src(routes.pug.src).pipe(gpug()).pipe(gulp.dest(routes.pug.dest));
 
-export const dev = gulp.series([pug]);
+const clean = () => del(["build"]);
+
+const prepare = gulp.series([clean]);
+
+const assets = gulp.series([pug]);
+
+// export is for "using in package.json file", if you don't use export, then you can't this command on that file
+export const dev = gulp.series([prepare, assets]);
 
 // what is task?
 // task can be take all the pug files, and put them on a different folder,

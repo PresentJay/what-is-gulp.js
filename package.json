@@ -19,5 +19,8 @@
   "scripts": {
     "dev": "gulp dev",
     "bulid": "gulp bulid"
+  },
+  "dependencies": {
+    "del": "^5.1.0"
   }
 }
