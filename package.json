@@ -21,6 +21,7 @@
     "bulid": "gulp bulid"
   },
   "dependencies": {
-    "del": "^5.1.0"
+    "del": "^5.1.0",
+    "gulp-webserver": "^0.9.1"
   }
 }
