@@ -8,6 +8,7 @@ import autoprefixer from "gulp-autoprefixer";
 import miniCSS from "gulp-csso";
 import bro from "gulp-bro";
 import babelify from "babelify";
+import ghPages from "gulp-gh-pages";
 
 sass.compiler = require('node-sass');
 
@@ -40,7 +41,7 @@ const pug = () =>
     .pipe(gpug())
     .pipe(gulp.dest(routes.pug.dest));
 
-const clean = () => del(["build"]);
+const clean = () => del(["build/", ".publish"]);
 
 const devserver = function () {
     gulp.src("build", {
@@ -85,6 +86,11 @@ const js = () =>
     }))
     .pipe(gulp.dest(routes.js.dest));
 
+const gh = () =>
+    gulp
+    .src('build/**/*')
+    .pipe(ghPages());
+
 const watch = () => {
     gulp.watch(routes.pug.watch, pug);
     gulp.watch(routes.img.src, img);
@@ -98,10 +104,14 @@ const assets = gulp.series([pug, styles, js]);
 
 const live = gulp.parallel([devserver, watch]);
 
+export const build = gulp.series([prepare, assets]);
+
 // export is for "using in package.json file", if you don't use export, then you can't this command on that file
-export const dev = gulp.series([prepare, assets, live]);
+export const dev = gulp.series([build, live]);
 
 // what is task?
 // task can be take all the pug files, and put them on a different folder,
 // but first, turn them into html. this is task
 // and the another task can be take all scss files, and turn them into css, and then, minify the code, and then put them on a folder called css
+
+export const deploy = gulp.series([build, gh, clean]);
