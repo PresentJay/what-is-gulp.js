@@ -3,6 +3,6 @@ import {
 } from "./util";
 
 const rOne = random(10);
-const rTow = random(20);
+const rTwo = random(20);
 
-console.log('${rOne} ${rTwo}');
+console.log(`${rOne} ${rTwo}`);
