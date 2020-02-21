@@ -1,15 +1,19 @@
-74
 import gulp from "gulp";
 import gpug from "gulp-pug";
 import del from "del";
 import ws from "gulp-webserver";
+import image from "gulp-image";
 
 const routes = {
     pug: {
         watch: 'src/**/*.pug',
         src: "src/*.pug",
         // if you wanna handle more folders below, using like this : "src/**/*.pug"
-        dest: "bulid"
+        dest: "build"
+    },
+    img: {
+        src: 'src/img/*',
+        dest: 'build/img'
     }
 };
 
@@ -19,7 +23,7 @@ const pug = () =>
     .pipe(gpug())
     .pipe(gulp.dest(routes.pug.dest));
 
-const clean = () => del(["build/"]);
+const clean = () => del(["build"]);
 
 const devserver = function () {
     gulp.src("build", {
@@ -31,18 +35,25 @@ const devserver = function () {
     }));
 };
 
+const img = () =>
+    gulp
+    .src(routes.img.src)
+    .pipe(image())
+    .pipe(gulp.dest(routes.img.dest))
+
 const watch = () => {
     gulp.watch(routes.pug.watch, pug);
+    gulp.watch(routes.img.src, img);
 };
 
-const prepare = gulp.series([clean]);
+const prepare = gulp.series([clean, img]);
 
 const assets = gulp.series([pug]);
 
-const postDev = gulp.parallel([devserver, watch]);
+const live = gulp.parallel([devserver, watch]);
 
 // export is for "using in package.json file", if you don't use export, then you can't this command on that file
-export const dev = gulp.series([prepare, assets, postDev]);
+export const dev = gulp.series([prepare, assets, live]);
 
 // what is task?
 // task can be take all the pug files, and put them on a different folder,
