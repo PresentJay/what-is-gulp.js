@@ -6,30 +6,40 @@ import ws from "gulp-webserver";
 
 const routes = {
     pug: {
+        watch: 'src/**/*.pug',
         src: "src/*.pug",
-        // if you wanna handle more folders below, using like this : "src/**/.*.pug"
+        // if you wanna handle more folders below, using like this : "src/**/*.pug"
         dest: "bulid"
     }
-}
+};
 
-const pug = () => gulp.src(routes.pug.src).pipe(gpug()).pipe(gulp.dest(routes.pug.dest));
+const pug = () =>
+    gulp
+    .src(routes.pug.src)
+    .pipe(gpug())
+    .pipe(gulp.dest(routes.pug.dest));
 
 const clean = () => del(["build/"]);
 
-const webserver = () =>
+const devserver = function () {
     gulp.src("build", {
         allowEmpty: true
     }).pipe(ws({
         port: "8008",
-        liveload: true,
+        livereload: true,
         open: true
     }));
+};
+
+const watch = () => {
+    gulp.watch(routes.pug.watch, pug);
+};
 
 const prepare = gulp.series([clean]);
 
 const assets = gulp.series([pug]);
 
-const postDev = gulp.series([webserver]);
+const postDev = gulp.parallel([devserver, watch]);
 
 // export is for "using in package.json file", if you don't use export, then you can't this command on that file
 export const dev = gulp.series([prepare, assets, postDev]);
