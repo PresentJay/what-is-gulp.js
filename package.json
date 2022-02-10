@@ -31,7 +31,7 @@
     "gulp-image": "^6.0.0",
     "gulp-sass": "^4.0.2",
     "gulp-webserver": "^0.9.1",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "uglifyify": "^5.0.2"
   }
 }
